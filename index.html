@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        input {
+            background-color: rgb(3, 6, 38);
+            border: 1px solid #ffffff;
+            border-radius: 4px;
+            color: #99acc2;
+            padding: 5px;
+        }
+
+        .normal {}
+    </style>
+</head>
+
+<body>
+    <div class="normal">
+        <input type="text" onkeyup="ordinaryData()">
+        <p id="getData">hi</p>
+    </div>
+    <input type="text" onkeyup="betterFunction()">
+    <p id="betterFunction">hi</p>
+
+
+    <script>
+        let gdata = document.getElementById("getData");
+        gdata.innerHTML = "Search above...";
+
+        let betterfunction = document.getElementById("betterFunction");
+        betterfunction.innerHTML = "Search above...using debouncing";
+
+
+        let counter = 0;
+        let ordinaryCounter = 0;
+
+        const ordinaryData = () => {
+            console.log("Fterching Data...", ordinaryCounter++);
+            gdata.innerHTML = `request for API send ${ordinaryCounter} times`;
+        }
+
+        const getData = () => {
+            console.log("Fetching data...", counter++);
+            //gdata.innerHTML = `Request for API send ${counter} times`;
+            betterfunction.innerHTML = `Request for API send ${counter} times`;
+        }
+
+        const useDebouncing = function (fn, d) {
+            let timer;
+            return function () {
+                let context = this,
+                    args = arguments;
+                clearTimeout(timer);
+                timer = setTimeout(() => {
+                    getData.apply(context, arguments);
+                }, d);
+            }
+        }
+        const betterFunction = useDebouncing(getData, 300);
+
+
+    </script>
+</body>
+
+</html>
